@@ -1,4 +1,3 @@
-import java.util.List;
 import java.util.Stack;
 
 public class Application {
@@ -10,13 +9,25 @@ public class Application {
         System.out.println("Hello world!");
     }
 
-    int countCorruptScore(String lineOfChunks) {
+    int countTokenSequenceScore(String lineOfChunks) {
 
-        Stack stack = new Stack();
-        for (int i = 0; i < lineOfChunks.length(); i++) {
-
+        Stack<String> stack = new Stack<>();
+        boolean brokenSequence = false;
+        int score = 0;
+        for (int i = 0; i < lineOfChunks.length() && !brokenSequence; i++) {
+            String token = String.valueOf(lineOfChunks.charAt(i));
+            if (OPEN_TOKENS.contains(token)) {
+                stack.push(token);
+            } else {
+                int closeTokenIndex = CLOSE_TOKENS.indexOf(token);
+                String lastOpenToken = stack.pop();
+                if (!lastOpenToken.equals(String.valueOf(OPEN_TOKENS.charAt(closeTokenIndex)))) {
+                    brokenSequence = true;
+                    score = countTokenScore(token.charAt(0));
+                }
+            }
         }
-        return 0;
+        return score;
     }
 
     int countTokenScore(char token) {
