@@ -1,3 +1,4 @@
+import java.util.List;
 import java.util.Stack;
 
 public class Application {
@@ -7,6 +8,14 @@ public class Application {
 
     public static void main(String args[]) {
         System.out.println("Hello world!");
+    }
+
+    int countListOfTokenSequencesScore(List<String> linesOfChunks) {
+        int totalScore = 0;
+        for (String lineOfChunks: linesOfChunks) {
+            totalScore += countTokenSequenceScore(lineOfChunks);
+        }
+        return totalScore;
     }
 
     int countTokenSequenceScore(String lineOfChunks) {
