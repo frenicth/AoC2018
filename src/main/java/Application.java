@@ -10,15 +10,15 @@ public class Application {
         System.out.println("Hello world!");
     }
 
-    int countListOfTokenSequencesScore(List<String> linesOfChunks) {
+    int scoreForLinesOfChunks(List<String> linesOfChunks) {
         int totalScore = 0;
         for (String lineOfChunks: linesOfChunks) {
-            totalScore += countTokenSequenceScore(lineOfChunks);
+            totalScore += scoreForLineOfChunks(lineOfChunks);
         }
         return totalScore;
     }
 
-    int countTokenSequenceScore(String lineOfChunks) {
+    int scoreForLineOfChunks(String lineOfChunks) {
 
         Stack<String> stack = new Stack<>();
         boolean brokenSequence = false;
@@ -32,14 +32,14 @@ public class Application {
                 String lastOpenToken = stack.pop();
                 if (!lastOpenToken.equals(String.valueOf(OPEN_TOKENS.charAt(closeTokenIndex)))) {
                     brokenSequence = true;
-                    score = countTokenScore(token.charAt(0));
+                    score = scoreForInvalidClosingToken(token.charAt(0));
                 }
             }
         }
         return score;
     }
 
-    int countTokenScore(char token) {
+    int scoreForInvalidClosingToken(char token) {
         int score = 0;
         switch (token) {
             case ')': {

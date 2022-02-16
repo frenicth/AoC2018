@@ -18,27 +18,27 @@ class ApplicationTest {
     }
 
     @ParameterizedTest
-    @MethodSource("invalidToken")
-    void testCountTokenScore(char input, int expected) {
-        int actual = classUnderTest.countTokenScore(input);
+    @MethodSource("invalidClosingToken")
+    void testScoreForInvalidClosingToken(char input, int expected) {
+        int actual = classUnderTest.scoreForInvalidClosingToken(input);
         assertThat(actual).isEqualTo(expected);
     }
 
     @ParameterizedTest
-    @MethodSource("tokenSequences")
-    void testCountTokenScore(String input, int expected) {
-        int actual = classUnderTest.countTokenSequenceScore(input);
+    @MethodSource("lineOfChunks")
+    void testScoreForLineOfChunks(String input, int expected) {
+        int actual = classUnderTest.scoreForLineOfChunks(input);
         assertThat(actual).isEqualTo(expected);
     }
 
     @ParameterizedTest
-    @MethodSource("listOfTokenSequences")
-    void testCountTokenScore(List<String> input, int expected) {
-        int actual = classUnderTest.countListOfTokenSequencesScore(input);
+    @MethodSource("linesOfChunks")
+    void testScoreForLinesOfChunks(List<String> input, int expected) {
+        int actual = classUnderTest.scoreForLinesOfChunks(input);
         assertThat(actual).isEqualTo(expected);
     }
 
-    private static Stream<Arguments> invalidToken() {
+    private static Stream<Arguments> invalidClosingToken() {
         return Stream.of(
                 Arguments.of(')', 3),
                 Arguments.of(']', 57),
@@ -47,7 +47,7 @@ class ApplicationTest {
         );
     }
 
-    private static Stream<Arguments> tokenSequences() {
+    private static Stream<Arguments> lineOfChunks() {
         return Stream.of(
                 Arguments.of("[[<[([]))<([[{}[[()]]]", 3),
                 Arguments.of("[{[{({}]{}}([{[{{{}}([]", 57),
@@ -56,7 +56,7 @@ class ApplicationTest {
         );
     }
 
-    private static Stream<Arguments> listOfTokenSequences() {
+    private static Stream<Arguments> linesOfChunks() {
         return Stream.of(
                 Arguments.of(List.of("[({(<(())[]>[[{[]{<()<>>",
                         "[(()[<>])]({[<{<<[]>>(",
