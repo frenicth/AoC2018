@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
 
@@ -5,24 +7,38 @@ public class Application {
 
     public static final String OPEN_TOKENS = "([{<";
     public static final String CLOSE_TOKENS = ")]}>";
+    public static final boolean PART_ONE = true;
+    public static final boolean PART_TWO = false;
 
     public static void main(String args[]) {
         System.out.println("Hello world!");
     }
 
-    int scoreForLinesOfChunks(List<String> linesOfChunks) {
+    int scoreForBrokenLinesOfChunks(List<String> linesOfChunks) {
         int totalScore = 0;
         for (String lineOfChunks: linesOfChunks) {
-            totalScore += scoreForLineOfChunks(lineOfChunks);
+            totalScore += scoreForLineOfChunks(lineOfChunks, PART_ONE);
         }
         return totalScore;
     }
 
-    int scoreForLineOfChunks(String lineOfChunks) {
+    Long scoreForAutocompleteLinesOfChunks(List<String> linesOfChunks) {
+        List<Long> totalScore = new ArrayList<>();
+        for (String lineOfChunks: linesOfChunks) {
+            if (scoreForLineOfChunks(lineOfChunks, PART_TWO) != 0) {
+                totalScore.add(scoreForLineOfChunks(lineOfChunks, PART_TWO));
+            }
+        }
+        Collections.sort(totalScore);
+        return totalScore.get(totalScore.size()/2);
+    }
+
+    long scoreForLineOfChunks(String lineOfChunks, boolean partOne) {
 
         Stack<String> stack = new Stack<>();
         boolean brokenSequence = false;
-        int score = 0;
+        long score = 0;
+        long autoCompleteScore = 0;
         for (int i = 0; i < lineOfChunks.length() && !brokenSequence; i++) {
             String token = String.valueOf(lineOfChunks.charAt(i));
             if (OPEN_TOKENS.contains(token)) {
@@ -35,6 +51,19 @@ public class Application {
                     score = scoreForInvalidClosingToken(token.charAt(0));
                 }
             }
+        }
+
+        if (stack.size() != 0 && !brokenSequence) {
+            int stackSize = stack.size();
+            for (int i = 0; i < stackSize; i++) {
+                int openTokenIndex = OPEN_TOKENS.indexOf(stack.pop());
+                String closeToken = String.valueOf(CLOSE_TOKENS.charAt(openTokenIndex));
+                autoCompleteScore *= 5;
+                autoCompleteScore += scoreForMissingClosingToken(closeToken.charAt(0));
+            }
+        }
+        if (!partOne) {
+            score = autoCompleteScore;
         }
         return score;
     }
