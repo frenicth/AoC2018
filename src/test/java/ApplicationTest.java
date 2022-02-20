@@ -25,6 +25,13 @@ class ApplicationTest {
     }
 
     @ParameterizedTest
+    @MethodSource("missingClosingToken")
+    void testScoreForMissingClosingToken(char input, int expected) {
+        int actual = classUnderTest.scoreForMissingClosingToken(input);
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @ParameterizedTest
     @MethodSource("lineOfChunks")
     void testScoreForLineOfChunks(String input, int expected) {
         int actual = classUnderTest.scoreForLineOfChunks(input);
@@ -44,6 +51,15 @@ class ApplicationTest {
                 Arguments.of(']', 57),
                 Arguments.of('}', 1197),
                 Arguments.of('>', 25137)
+        );
+    }
+
+    private static Stream<Arguments> missingClosingToken() {
+        return Stream.of(
+                Arguments.of(')', 1),
+                Arguments.of(']', 2),
+                Arguments.of('}', 3),
+                Arguments.of('>', 4)
         );
     }
 

@@ -61,4 +61,27 @@ public class Application {
 
         return score;
     }
+
+    int scoreForMissingClosingToken(char token) {
+        int score = 0;
+        switch (token) {
+            case ')': {
+                score = 1;
+                break;
+            }
+            case ']': {
+                score = 2;
+                break;
+            }
+            case '}': {
+                score = 3;
+                break;
+            }
+            case '>': {
+                score = 4;
+            }
+        }
+
+        return score;
+    }
 }
