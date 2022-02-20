@@ -49,7 +49,7 @@ class ApplicationTest {
     @ParameterizedTest
     @MethodSource("autocompleteLinesOfChunks")
     void testScoreForAutocompleteLinesOfChunks(List<String> input, long expected) {
-        Long actual = classUnderTest.scoreForAutocompleteLinesOfChunks(input);
+        Long actual = classUnderTest.scoreForIncompleteLinesOfChunks(input);
         assertThat(actual).isEqualTo(expected);
     }
 

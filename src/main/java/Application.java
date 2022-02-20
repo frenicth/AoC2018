@@ -14,6 +14,11 @@ public class Application {
         System.out.println("Hello world!");
     }
 
+    /**
+     * Calculate the score for all broken sequences in a list of chunks
+     * @param linesOfChunks
+     * @return score for the given list
+     */
     int scoreForBrokenLinesOfChunks(List<String> linesOfChunks) {
         int totalScore = 0;
         for (String lineOfChunks: linesOfChunks) {
@@ -22,7 +27,12 @@ public class Application {
         return totalScore;
     }
 
-    Long scoreForAutocompleteLinesOfChunks(List<String> linesOfChunks) {
+    /**
+     * Calculate the score for all incomplete sequences in a list of chunks
+     * @param linesOfChunks
+     * @return score for the given list
+     */
+    Long scoreForIncompleteLinesOfChunks(List<String> linesOfChunks) {
         List<Long> totalScore = new ArrayList<>();
         for (String lineOfChunks: linesOfChunks) {
             if (scoreForLineOfChunks(lineOfChunks, PART_TWO) != 0) {
@@ -33,6 +43,13 @@ public class Application {
         return totalScore.get(totalScore.size()/2);
     }
 
+    /**
+     * Calculate the score for a line of chunks.
+     * @param lineOfChunks line of chunks to calculate score for
+     * @param partOne boolean to toggle calculation of incomplete or broken sequences
+     * @return score for the given list and partOne
+     */
+    // TODO: Refactoring this to get rid of the boolean flag, it's error prone.
     long scoreForLineOfChunks(String lineOfChunks, boolean partOne) {
 
         Stack<String> stack = new Stack<>();
